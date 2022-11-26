@@ -44,7 +44,7 @@ func newBot() tgbotapi.UpdatesChannel {
 		log.Printf("Telegram callback failed: %s", info.LastErrorMessage)
 	}
 
-	updates := bot.ListenForWebhook("/" + bot.Token)
+	updates := bot.ListenForWebhook("/")
 	go http.ListenAndServe(":80", nil)
 	//u := tgbotapi.NewUpdate(0)
 	//u.Timeout = 60
