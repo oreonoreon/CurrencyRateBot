@@ -29,12 +29,16 @@ func init() {
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 }
 
-const webhook string = "https://currencyratebot1.herokuapp.com/"
+const webhook string = "https://currencyratebot1.herokuapp.com"
 
 func newBot() tgbotapi.UpdatesChannel {
-	wh, _ := tgbotapi.NewWebhook(webhook)
-	bot.Request(wh)
-
+	wh, err := tgbotapi.NewWebhook(webhook)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if _, err = bot.Request(wh); err != nil {
+		log.Fatal(err)
+	}
 	info, err := bot.GetWebhookInfo()
 	if err != nil {
 		log.Fatal(err)
