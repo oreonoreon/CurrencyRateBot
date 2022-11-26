@@ -21,7 +21,7 @@ func init() {
 	os.Setenv("token", GetYourCurrencyRate)
 
 	var err error
-	bot, err = tgbotapi.NewBotAPI(os.Getenv("TOKEN"))
+	bot, err = tgbotapi.NewBotAPI(os.Getenv("token"))
 	if err != nil {
 		log.Panic(err)
 	}
