@@ -73,7 +73,7 @@ func NewPostBody(
 		Page:          1,
 		PayTypes:      payTypes,
 		PublisherType: "",
-		Rows:          20,
+		Rows:          5,
 		TradeType:     tradeType,
 		TransAmount:   transAmount,
 	}
