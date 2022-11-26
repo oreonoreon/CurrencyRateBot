@@ -49,7 +49,7 @@ func newBot() tgbotapi.UpdatesChannel {
 	}
 
 	updates := bot.ListenForWebhook("/")
-	go http.ListenAndServe(":80", nil)
+	go http.ListenAndServe(":8080", nil)
 	//u := tgbotapi.NewUpdate(0)
 	//u.Timeout = 60
 	//updates := bot.GetUpdatesChan(u)
