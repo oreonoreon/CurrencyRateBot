@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const webhook string = "https://currencyratebot1.herokuapp.com/"
+const webhook string = "https://currencyratebot1.herokuapp.com"
 const port string = "80"
 
 var botCache *Cache
