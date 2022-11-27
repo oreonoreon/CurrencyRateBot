@@ -9,6 +9,9 @@ import (
 	"time"
 )
 
+const webhook string = "https://currencyratebot1.herokuapp.com/"
+const port string = "80"
+
 var botCache *Cache
 var bot *tgbotapi.BotAPI
 
@@ -29,13 +32,12 @@ func init() {
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 }
 
-const webhook string = "https://currencyratebot1.herokuapp.com"
-
 func newBot() tgbotapi.UpdatesChannel {
 	wh, err := tgbotapi.NewWebhook(webhook)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	if _, err = bot.Request(wh); err != nil {
 		log.Fatal(err)
 	}
@@ -49,7 +51,7 @@ func newBot() tgbotapi.UpdatesChannel {
 	}
 
 	updates := bot.ListenForWebhook("/")
-	go http.ListenAndServe(":8080", nil)
+	go http.ListenAndServe(":"+port, nil)
 	//u := tgbotapi.NewUpdate(0)
 	//u.Timeout = 60
 	//updates := bot.GetUpdatesChan(u)
