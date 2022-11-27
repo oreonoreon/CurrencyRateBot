@@ -1,16 +1,16 @@
 package bot
 
 import (
+	"CurrencyRateBot/internal/logger"
 	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"log"
 	"net/http"
 	"os"
 	"time"
 )
 
 const webhook string = "https://currencyratebot1.herokuapp.com"
-const port string = "80"
+const port string = "8080"
 
 var botCache *Cache
 var bot *tgbotapi.BotAPI
@@ -26,32 +26,36 @@ func init() {
 	var err error
 	bot, err = tgbotapi.NewBotAPI(os.Getenv("token"))
 	if err != nil {
-		log.Panic(err)
+		logger.Log.Panic(err)
 	}
 	bot.Debug = false
-	log.Printf("Authorized on account %s", bot.Self.UserName)
+	logger.Log.Printf("Authorized on account %s", bot.Self.UserName)
 }
 
 func newBot() tgbotapi.UpdatesChannel {
 	wh, err := tgbotapi.NewWebhook(webhook)
 	if err != nil {
-		log.Fatal(err)
+		logger.Log.Fatal(err)
 	}
 
 	if _, err = bot.Request(wh); err != nil {
-		log.Fatal(err)
+		logger.Log.Fatal(err)
 	}
 	info, err := bot.GetWebhookInfo()
 	if err != nil {
-		log.Fatal(err)
+		logger.Log.Fatal(err)
 	}
 
 	if info.LastErrorDate != 0 {
-		log.Printf("Telegram callback failed: %s", info.LastErrorMessage)
+		logger.Log.Printf("Telegram callback failed: %s", info.LastErrorMessage)
 	}
 
 	updates := bot.ListenForWebhook("/")
-	go http.ListenAndServe(":"+port, nil)
+	go func() {
+		if err := http.ListenAndServe(":"+port, nil); err != nil {
+			logger.Log.Fatal(err)
+		}
+	}()
 	//u := tgbotapi.NewUpdate(0)
 	//u.Timeout = 60
 	//updates := bot.GetUpdatesChan(u)
@@ -69,7 +73,7 @@ func Bot() {
 			} else {
 				err := LOGIKA(update.SentFrom().ID, update.Message.Text)
 				if err != nil {
-					fmt.Println(err)
+					logger.Log.Println(err)
 				}
 			}
 		}

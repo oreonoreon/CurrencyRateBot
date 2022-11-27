@@ -14,7 +14,7 @@ func LOGIKA(ID int64, message string) error {
 		msg := tgbotapi.NewMessage(ID, "Напишите сумму которую желаете поменять.")
 		_, err := bot.Send(msg)
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 		s := NewStatement()
 		s.amountSet = true
@@ -25,8 +25,9 @@ func LOGIKA(ID int64, message string) error {
 			err := fmt.Errorf("%v can't be asserted to %v", reflect.TypeOf(item), reflect.TypeOf(botStatement{}))
 			return err
 		} else {
-			err := s.Cases(ID, message)
-			return err
+			if err := s.Cases(ID, message); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -58,7 +59,7 @@ func (s *botStatement) Cases(ID int64, message string) error {
 		msg := tgbotapi.NewMessage(ID, "Напишите сумму которую желаете поменять.")
 		_, err := bot.Send(msg)
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 		s.amountSet = true
 	case s.amountSet && !s.bankSet:
