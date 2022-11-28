@@ -4,6 +4,7 @@ import (
 	"CurrencyRateBot/internal/logger"
 	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -57,7 +58,7 @@ func newBot() tgbotapi.UpdatesChannel {
 	updates := bot.ListenForWebhook("/")
 	go func() {
 		if err := http.ListenAndServe(":"+port, nil); err != nil {
-			logger.Log.Fatal(err)
+			log.Fatal(err)
 		}
 	}()
 	//u := tgbotapi.NewUpdate(0)
