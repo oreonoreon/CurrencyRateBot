@@ -10,7 +10,7 @@ import (
 )
 
 const webhook string = "https://currencyratebot1.herokuapp.com"
-const port string = "8080"
+const port string = "80"
 
 var botCache *Cache
 var bot *tgbotapi.BotAPI
