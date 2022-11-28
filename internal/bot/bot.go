@@ -10,12 +10,16 @@ import (
 )
 
 const webhook string = "https://currencyratebot1.herokuapp.com"
-const port string = "80"
+
+var port string
 
 var botCache *Cache
 var bot *tgbotapi.BotAPI
 
 func init() {
+	//получим порт из переменой окружения
+	port = os.Getenv("PORT")
+	fmt.Printf("PORT SET TO -> %v", port)
 	//создадим кэш бота
 	botCache = New(10*time.Minute, 60*time.Minute)
 	fmt.Println("Bot cached initialised")
