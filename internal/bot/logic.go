@@ -105,3 +105,15 @@ func (s *botStatement) Cases(ID int64, message string) error {
 	}
 	return nil
 }
+
+type level struct {
+	question string
+	pass     bool
+}
+
+func NewLevel(question string) *level {
+	return &level{question: question, pass: false}
+}
+func (l *level) name() {
+
+}

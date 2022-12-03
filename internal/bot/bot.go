@@ -20,7 +20,7 @@ var bot *tgbotapi.BotAPI
 func init() {
 	//получим порт из переменой окружения
 	port = os.Getenv("PORT")
-	fmt.Printf("PORT SET TO -> %v", port)
+	fmt.Printf("PORT SET TO -> %v\n", port)
 	//создадим кэш бота
 	botCache = New(10*time.Minute, 60*time.Minute)
 	fmt.Println("Bot cached initialised")
@@ -61,6 +61,7 @@ func newBot() tgbotapi.UpdatesChannel {
 			log.Fatal(err)
 		}
 	}()
+
 	//u := tgbotapi.NewUpdate(0)
 	//u.Timeout = 60
 	//updates := bot.GetUpdatesChan(u)
