@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const webhook string = "https://currencyratebot1.herokuapp.com"
+const webhook string = "https://effulgent-pegasus-fb77da.netlify.app"
 
 var WebhookOn bool
 var port string
