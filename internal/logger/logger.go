@@ -9,7 +9,7 @@ import (
 var Log *log.Logger
 var Debug bool
 
-func init() {
+func Init() {
 	var file *os.File
 	var err error
 	if Debug {
@@ -21,14 +21,4 @@ func init() {
 		}
 	}
 	Log = log.New(file, time.Now().String(), 0)
-}
-
-type checker interface {
-	Check()
-}
-type A struct {
-}
-
-func (a A) Check() {
-
 }

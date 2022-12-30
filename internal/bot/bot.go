@@ -12,12 +12,13 @@ import (
 
 const webhook string = "https://currencyratebot1.herokuapp.com"
 
+var WebhookOn bool
 var port string
 
 var botCache *Cache
 var bot *tgbotapi.BotAPI
 
-func init() {
+func Init() {
 	//получим порт из переменой окружения
 	port = os.Getenv("PORT")
 	fmt.Printf("PORT SET TO -> %v\n", port)
@@ -38,34 +39,42 @@ func init() {
 }
 
 func newBot() tgbotapi.UpdatesChannel {
-	wh, err := tgbotapi.NewWebhook(webhook)
-	if err != nil {
-		logger.Log.Fatal(err)
-	}
-
-	if _, err = bot.Request(wh); err != nil {
-		logger.Log.Fatal(err)
-	}
-	info, err := bot.GetWebhookInfo()
-	if err != nil {
-		logger.Log.Fatal(err)
-	}
-
-	if info.LastErrorDate != 0 {
-		logger.Log.Printf("Telegram callback failed: %s", info.LastErrorMessage)
-	}
-
-	updates := bot.ListenForWebhook("/")
-	go func() {
-		if err := http.ListenAndServe(":"+port, nil); err != nil {
-			log.Fatal(err)
+	if WebhookOn {
+		wh, err := tgbotapi.NewWebhook(webhook)
+		if err != nil {
+			logger.Log.Fatal(err)
 		}
-	}()
 
-	//u := tgbotapi.NewUpdate(0)
-	//u.Timeout = 60
-	//updates := bot.GetUpdatesChan(u)
-	return updates
+		if _, err = bot.Request(wh); err != nil {
+			logger.Log.Fatal(err)
+		}
+		info, err := bot.GetWebhookInfo()
+		if err != nil {
+			logger.Log.Fatal(err)
+		}
+
+		if info.LastErrorDate != 0 {
+			logger.Log.Printf("Telegram callback failed: %s", info.LastErrorMessage)
+		}
+
+		updates := bot.ListenForWebhook("/")
+		go func() {
+			if err := http.ListenAndServe(":"+port, nil); err != nil {
+				log.Fatal(err)
+			}
+		}()
+		return updates
+	} else {
+		wh := tgbotapi.DeleteWebhookConfig{DropPendingUpdates: true}
+		if _, err := bot.Request(wh); err != nil {
+			logger.Log.Fatal(err)
+		}
+		u := tgbotapi.NewUpdate(0)
+		u.Timeout = 60
+		updates := bot.GetUpdatesChan(u)
+		return updates
+	}
+
 }
 func Bot() {
 	//получаем апдейты
