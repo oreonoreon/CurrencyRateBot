@@ -8,7 +8,7 @@ import (
 func init() {
 	logger.Debug = true
 	logger.Init()
-	bot.WebhookOn = true
+	bot.WebhookOn = false
 	bot.Init()
 }
 func main() {
